@@ -1,6 +1,9 @@
 {
   "name": "iamtech",
   "version": "0.1.0",
+  "description": "I AM Tech recruitment assessment",
+  "main": "index.ts",
+  "author": "Roberto Llopis",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +12,17 @@
   },
   "dependencies": {
     "next": "10.0.8",
+    "next-redux-wrapper": "^6.0.2",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-redux": "^7.2.2",
+    "react-thunk": "^1.0.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.9",
+    "styled-components": "^5.2.1"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.12.0",
+    "redux-logger": "^3.0.6"
   }
 }
