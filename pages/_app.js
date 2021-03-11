@@ -1,13 +1,11 @@
 import React from "react";
 import App from "next/app";
 import { wrapper } from "../redux/store-w-wrapper";
-import Layout from "../components/Layout";
+import { fetchAPITexts } from "../redux/language/language-actions";
 
 class WrappedApp extends App {
   static getInitialProps = async ({ Component, ctx }) => {
-    // Keep in mind that this will be called twice on server, one for page and second for error page
-    ctx.store.dispatch({ type: "APP", payload: "was set in _app" });
-
+    await ctx.store.dispatch(fetchAPITexts());
     return {
       pageProps: {
         // Call page-level getInitialProps
@@ -22,11 +20,7 @@ class WrappedApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
-    return (
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    );
+    return <Component {...pageProps} />;
   }
 }
 

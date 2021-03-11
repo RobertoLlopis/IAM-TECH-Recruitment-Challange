@@ -6,49 +6,63 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import LanguageTypes from "./language/language-types";
 
 const InitialState = {
-  page: {
-    isChangingLanguage: false,
-    changeLanguageError: null,
+  client: {
     currentLanguage: "en",
   },
-  app: {
-    currentTexts: [],
+  server: {
+    texts: [],
+    isFetchingTexts: false,
+    fetchingTextsError: null,
   },
 };
 
 const reducer = (state = InitialState, action) => {
   switch (action.type) {
     case HYDRATE:
-      if (action.payload.app === InitialState.app) delete action.payload.app;
-      if (action.payload.page === InitialState.page) delete action.payload.page;
-    case LanguageTypes.CHANGE_LANGUAGE_REQUEST: {
+      if (action.payload.client === InitialState.client)
+        delete action.payload.client;
+      if (action.payload.server === InitialState.server)
+        delete action.payload.server;
       return {
         ...state,
-        page: {
-          ...state.page,
-          isChangingLanguage: true,
-          changeLanguageError: null,
+        ...action.payload,
+      };
+    case LanguageTypes.CHANGE_LANGUAGE: {
+      return {
+        ...state,
+        client: {
+          ...state.client,
+          currentLanguage: action.payload,
         },
       };
     }
-    case LanguageTypes.CHANGE_LANGUAGE_ERROR: {
+    case LanguageTypes.INITIAL_TEXTS_FETCH_REQUEST: {
       return {
         ...state,
-        page: {
-          ...state.page,
-          isChangingLanguage: false,
-          changeLanguageError: action.payload,
+        server: {
+          ...state.server,
+          isFetchingTexts: true,
+          fetchingTextsError: null,
         },
       };
     }
-    case LanguageTypes.CHANGE_LANGUAGE_SUCCESS: {
+    case LanguageTypes.INITIAL_TEXTS_FETCH_ERROR: {
       return {
         ...state,
-        page: {
-          ...state.page,
-          isChangingLanguage: false,
-          changeLanguageError: null,
-          currentLanguage: action.payload.currentLanguage,
+        server: {
+          ...state.server,
+          isFetchingTexts: false,
+          fetchingTextsError: action.payload,
+        },
+      };
+    }
+    case LanguageTypes.INITIAL_TEXTS_FETCH_SUCCESS: {
+      return {
+        ...state,
+        server: {
+          isFetchingTexts: false,
+          fetchingTextsError: null,
+          texts: action.payload,
         },
       };
     }

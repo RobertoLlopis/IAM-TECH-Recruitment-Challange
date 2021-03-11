@@ -3,41 +3,41 @@ import awsconfig from "../../api-sync-config";
 Amplify.configure(awsconfig);
 import LanguageTypes from "./language-types";
 
-export const changeLanguageRequest = () => ({
-  type: LanguageTypes.CHANGE_LANGUAGE_REQUEST,
+export const fetchAPITextsRequest = () => ({
+  type: LanguageTypes.INITIAL_TEXTS_FETCH_REQUEST,
 });
 
-export const changeLanguageError = (message) => ({
-  type: LanguageTypes.CHANGE_LANGUAGE_ERROR,
+export const fetchAPITextsError = (message) => ({
+  type: LanguageTypes.INITIAL_TEXTS_FETCH_ERROR,
   payload: message,
 });
-
-export const changeLanguageSuccess = (newLanguage) => ({
-  type: LanguageTypes.CHANGE_LANGUAGE_SUCCESS,
-  payload: {
-    currentLanguage: newLanguage,
-    currentTexts: "algo",
-  },
+export const fetchAPITextsSuccess = (texts) => ({
+  type: LanguageTypes.INITIAL_TEXTS_FETCH_SUCCESS,
+  payload: texts,
+});
+export const changeLanguage = (newLanguage) => ({
+  type: LanguageTypes.CHANGE_LANGUAGE,
+  payload: newLanguage,
 });
 
-export function changeLanguage(newLanguage) {
+export function fetchAPITexts() {
   return async function changeLanguageThunk(dispatch) {
-    dispatch(changeLanguageRequest());
+    dispatch(fetchAPITextsRequest());
     try {
       const response = await API.graphql(
         graphqlOperation(`{listTranslations {
-        id
-        tag
-        valueLang {
-        en
-        es
-        }
-        }}`)
+          tag
+          valueLang {
+          en
+          es
+          }
+          }}`)
       );
-      console.log(response);
-      dispatch(changeLanguageSuccess(newLanguage));
+      const arrOfTexts = response.data.listTranslations;
+      console.log(arrOfTexts, "AQUI LLEGAAAAAA");
+      dispatch(fetchAPITextsSuccess(arrOfTexts));
     } catch (error) {
-      dispatch(changeLanguageError(error.message));
+      dispatch(fetchAPITextsError(error.message));
     }
   };
 }
