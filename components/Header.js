@@ -7,6 +7,8 @@ const StyledHeader = styled.header`
   justify-content: space-evenly;
   align-items: center;
   width: 100vw;
+  font-family: sans-serif;
+  background-color: #3949a0;
   h1 {
     font-size: 1.2rem;
     display: inline;
@@ -18,6 +20,10 @@ const StyledHeader = styled.header`
     justify-content: space-around;
     align-items: center;
     list-style: none;
+  }
+  a {
+    text-decoration: none;
+    color: #8ca2f7;
   }
 `;
 function Header() {

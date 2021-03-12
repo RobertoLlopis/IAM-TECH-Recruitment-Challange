@@ -3,6 +3,7 @@ import App from "next/app";
 import { wrapper } from "../redux/store";
 import { chacheTexts, fetchAPITexts } from "../redux/language/language-actions";
 import cacheData from "memory-cache";
+import "../styles/globals.scss";
 
 class WrappedApp extends App {
   static getInitialProps = async ({ Component, ctx }) => {
