@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
-import MainContent from "../components/mainContent";
+import MainContent from "../components/MainContent";
 import { changeLanguage } from "../redux/language/language-actions";
 import { chooseUserLang } from "../utils/utils";
 
