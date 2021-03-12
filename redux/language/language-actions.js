@@ -19,7 +19,12 @@ export const changeLanguage = (newLanguage) => ({
   type: LanguageTypes.CHANGE_LANGUAGE,
   payload: newLanguage,
 });
-
+export function chacheTexts(texts) {
+  return {
+    type: LanguageTypes.INITIAL_TEXTS_CACHED,
+    payload: texts,
+  };
+}
 export function fetchAPITexts() {
   return async function changeLanguageThunk(dispatch) {
     dispatch(fetchAPITextsRequest());
@@ -34,10 +39,9 @@ export function fetchAPITexts() {
           }}`)
       );
       const arrOfTexts = response.data.listTranslations;
-      console.log(arrOfTexts);
-      //* API has an error, in about page needed to change valueLanguages
+      //* API has an error, in about page and generic select needed to change valueLanguages to the opposite
       const arrOfTextsCorrected = arrOfTexts.map((t) => {
-        if (!t.tag.includes("about")) {
+        if (t.tag.includes("home")) {
           return { ...t };
         }
         return {

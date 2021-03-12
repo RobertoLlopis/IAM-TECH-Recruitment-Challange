@@ -1,7 +1,6 @@
-import React from "react";
-
 function MainContent({ texts, lang }) {
   let textsSubstracted = {};
+
   texts.forEach((t) => {
     if (t.tag.includes("h1")) {
       textsSubstracted.textH1 = t.valueLang[lang];
@@ -11,9 +10,7 @@ function MainContent({ texts, lang }) {
       textsSubstracted.textH2 = t.valueLang[lang];
       return;
     }
-    console.log(lang);
     textsSubstracted.textP = t.valueLang[lang];
-    console.log(textsSubstracted.textP);
   });
 
   const { textH1, textH2, textP } = textsSubstracted;

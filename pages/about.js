@@ -1,11 +1,14 @@
-import { loadGetInitialProps } from "next/dist/next-server/lib/utils";
-import React from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
-
 import Layout from "../components/Layout";
 import MainContent from "../components/mainContent";
-function About({ texts, lang }) {
-  console.log(lang);
+import { changeLanguage } from "../redux/language/language-actions";
+import { chooseUserLang } from "../utils/utils";
+
+function About({ texts, lang, change }) {
+  useEffect(() => {
+    chooseUserLang(lang, change);
+  }, []);
   return (
     <Layout>
       <MainContent texts={texts} lang={lang} />
@@ -20,5 +23,10 @@ const mapStateToProps = (state, ownProps) => {
     texts: texts,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    change: (newLang) => dispatch(changeLanguage(newLang)),
+  };
+};
 
-export default connect(mapStateToProps)(About);
+export default connect(mapStateToProps, mapDispatchToProps)(About);

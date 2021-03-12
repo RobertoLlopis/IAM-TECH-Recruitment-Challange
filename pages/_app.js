@@ -1,11 +1,19 @@
 import React from "react";
 import App from "next/app";
-import { wrapper } from "../redux/store-w-wrapper";
-import { fetchAPITexts } from "../redux/language/language-actions";
+import { wrapper } from "../redux/store";
+import { chacheTexts, fetchAPITexts } from "../redux/language/language-actions";
+import cacheData from "memory-cache";
 
 class WrappedApp extends App {
   static getInitialProps = async ({ Component, ctx }) => {
-    await ctx.store.dispatch(fetchAPITexts());
+    const texts = cacheData.get("texts");
+    if (!texts) {
+      await ctx.store.dispatch(fetchAPITexts());
+      const state = await ctx.store.getState();
+      cacheData.put("texts", state.server.texts);
+    } else {
+      await ctx.store.dispatch(chacheTexts(texts));
+    }
     return {
       pageProps: {
         // Call page-level getInitialProps

@@ -1,21 +1,20 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { changeLanguage } from "../redux/language/language-actions";
 import styled from "styled-components";
 import Layout from "../components/Layout";
 import MainContent from "../components/mainContent";
-import { useRouter } from "next/router";
+import { chooseUserLang } from "../utils/utils";
 
 function Home({ lang, texts, change }) {
-  const router = useRouter();
-  const handleClick = (_e) => {
-    change("es");
-  };
+  useEffect(() => {
+    chooseUserLang(lang, change);
+  }, []);
 
   return (
     <Layout>
-      {lang}
       <MainContent texts={texts} lang={lang} />
-      <button onClick={handleClick}>Click me</button>
     </Layout>
   );
 }

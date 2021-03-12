@@ -1,41 +1,71 @@
+import { HYDRATE } from "next-redux-wrapper";
 import LanguageTypes from "./language-types";
 
-export const LanguageInitialState = {
-  isChangingLanguage: false,
-  changeLanguageError: null,
-  currentLanguage: "en",
-  currentTexts: [
-    { tag: "greeting", valueLang: { es: "Hola", en: "Hello" } },
-    {
-      tag: "selectLanguage",
-      valueLang: { es: "Selecciona idioma", en: "Select language" },
-    },
-  ],
+const InitialState = {
+  client: {
+    currentLanguage: "en",
+  },
+  server: {
+    texts: [],
+    isFetchingTexts: false,
+    fetchingTextsError: null,
+  },
 };
 
-const LanguageReducer = (state = LanguageInitialState, action) => {
+export const languageReducer = (state = InitialState, action) => {
   switch (action.type) {
-    case LanguageTypes.CHANGE_LANGUAGE_REQUEST: {
+    case HYDRATE:
       return {
         ...state,
-        isChangingLanguage: true,
-        changeLanguageError: null,
+        ...action.payload,
+      };
+    case LanguageTypes.CHANGE_LANGUAGE: {
+      return {
+        ...state,
+        client: {
+          ...state.client,
+          currentLanguage: action.payload,
+        },
       };
     }
-    case LanguageTypes.CHANGE_LANGUAGE_ERROR: {
+    case LanguageTypes.INITIAL_TEXTS_FETCH_REQUEST: {
       return {
         ...state,
-        isChangingLanguage: false,
-        changeLanguageError: action.payload,
+        server: {
+          ...state.server,
+          isFetchingTexts: true,
+          fetchingTextsError: null,
+        },
       };
     }
-    case LanguageTypes.CHANGE_LANGUAGE_SUCCESS: {
+    case LanguageTypes.INITIAL_TEXTS_FETCH_ERROR: {
       return {
         ...state,
-        isChangingLanguage: false,
-        changeLanguageError: null,
-        currentLanguage: action.payload.currentLanguage,
-        currentTexts: action.payload.currentTexts,
+        server: {
+          ...state.server,
+          isFetchingTexts: false,
+          fetchingTextsError: action.payload,
+        },
+      };
+    }
+    case LanguageTypes.INITIAL_TEXTS_FETCH_SUCCESS: {
+      return {
+        ...state,
+        server: {
+          isFetchingTexts: false,
+          fetchingTextsError: null,
+          texts: action.payload,
+        },
+      };
+    }
+    case LanguageTypes.INITIAL_TEXTS_CACHED: {
+      console.log(action.payload);
+      return {
+        ...state,
+        server: {
+          ...state.server,
+          texts: action.payload,
+        },
       };
     }
     default: {
@@ -43,5 +73,3 @@ const LanguageReducer = (state = LanguageInitialState, action) => {
     }
   }
 };
-
-export default LanguageReducer;
