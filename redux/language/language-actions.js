@@ -1,5 +1,12 @@
 import Amplify, { API, graphqlOperation } from "aws-amplify";
-import awsconfig from "../../api-sync-config";
+//import awsconfig from "../../api-sync-config";
+const awsconfig = {
+  aws_access_key_id: process.env.API_ID,
+  aws_appsync_graphqlEndpoint: process.env.URL_API,
+  aws_appsync_region: process.env.REGION,
+  aws_appsync_authenticationType: "API_KEY",
+  aws_appsync_apiKey: process.env.API_KEY,
+};
 Amplify.configure(awsconfig);
 import LanguageTypes from "./language-types";
 
