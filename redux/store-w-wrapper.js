@@ -19,8 +19,8 @@ const InitialState = {
 const reducer = (state = InitialState, action) => {
   switch (action.type) {
     case HYDRATE:
-      if (action.payload.client === InitialState.client)
-        delete action.payload.client;
+      /* if (action.payload.client === InitialState.client)
+        delete action.payload.client; */
       if (action.payload.server === InitialState.server)
         delete action.payload.server;
       return {

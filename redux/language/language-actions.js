@@ -34,8 +34,18 @@ export function fetchAPITexts() {
           }}`)
       );
       const arrOfTexts = response.data.listTranslations;
-      console.log(arrOfTexts, "AQUI LLEGAAAAAA");
-      dispatch(fetchAPITextsSuccess(arrOfTexts));
+      console.log(arrOfTexts);
+      //* API has an error, in about page needed to change valueLanguages
+      const arrOfTextsCorrected = arrOfTexts.map((t) => {
+        if (!t.tag.includes("about")) {
+          return { ...t };
+        }
+        return {
+          ...t,
+          valueLang: { es: t.valueLang.en, en: t.valueLang.es },
+        };
+      });
+      dispatch(fetchAPITextsSuccess(arrOfTextsCorrected));
     } catch (error) {
       dispatch(fetchAPITextsError(error.message));
     }
