@@ -1,3 +1,18 @@
+import styled from "styled-components";
+const StyledMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  padding: 5rem;
+  h1,
+  h2 {
+    margin: 0;
+    color: #3949a0;
+  }
+`;
+
 function MainContent({ texts, lang }) {
   let textsSubstracted = {};
 
@@ -15,11 +30,11 @@ function MainContent({ texts, lang }) {
 
   const { textH1, textH2, textP } = textsSubstracted;
   return (
-    <main>
+    <StyledMain>
       <h1>{textH1}</h1>
       <h2>{textH2}</h2>
       <p>{textP}</p>
-    </main>
+    </StyledMain>
   );
 }
 

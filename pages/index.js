@@ -1,8 +1,6 @@
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { changeLanguage } from "../redux/language/language-actions";
-import styled from "styled-components";
 import Layout from "../components/Layout";
 import MainContent from "../components/mainContent";
 import { chooseUserLang } from "../utils/utils";

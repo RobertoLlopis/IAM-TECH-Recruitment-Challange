@@ -6,10 +6,7 @@ const StyledFooter = styled.footer`
   justify-content: space-evenly;
   align-items: center;
   width: 100vw;
-  h1 {
-    font-size: 1.2rem;
-    display: inline;
-  }
+  height: 10%;
 `;
 function Footer({ lang, texts, change }) {
   const handleChange = (e) => {

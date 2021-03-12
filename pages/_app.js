@@ -8,9 +8,11 @@ import "../styles/globals.scss";
 class WrappedApp extends App {
   static getInitialProps = async ({ Component, ctx }) => {
     const texts = cacheData.get("texts");
+
     if (!texts) {
       await ctx.store.dispatch(fetchAPITexts());
       const state = await ctx.store.getState();
+
       cacheData.put("texts", state.server.texts);
     } else {
       await ctx.store.dispatch(chacheTexts(texts));
