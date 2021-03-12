@@ -1,34 +1,126 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Translation list API Consumption
+
+Recruitment´s challange solution for [IAM Technologies](https://www.iamtech.tech/).
+
+You can find the deployed App in vercel:
+
+**APP -> https://iam-tech-recruitment-challange.vercel.app/**
+
+Task was to create a Next.js app to consume a Graphql API from AWS Amplify. With translated texts comming from the API application handles state and show texts convinienty.
+
+State is managed from a isomorphic Redux store provided by next-redux-wrapper HOC.
+
+## Summary
+
+- [Getting Started](#getting-started)
+- [How it works](#how-it-works)
+- [API](#api)
+- [Default language](#default-language)
+- [Styles](#styles)
+- [Packages used](#packages-used)
+- [Authors](#authors)
 
 ## Getting Started
 
-First, run the development server:
+You will need to have `Yarn` and `Node.js` installed in your system in order to fetch and install packages required.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Installing
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Clone the repo locally
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+    git clone https://github.com/RobertoLlopis/IAM-TECH-Recruitment-Challange
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+And
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    yarn install
 
-## Learn More
+then feel free to run
 
-To learn more about Next.js, take a look at the following resources:
+    yarn dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+And open `http://localhost:3000/` to start interacting with the app.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# How it works
 
-## Deploy on Vercel
+---- In the server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+When users request for a page, in server side is computed the page with a Redux store.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+App in server will look to the cache (provided by memory-cache package) and if it is no instance of texts it will fetch translation´s API.
+
+With this server side state storaged next renders the client.
+
+---- In the client
+
+Next-redux-wrapper hydrates the replicated Redux store in the client. This store will be accessible by components and pages in normal react-redux flow.
+
+After components have mounted pages check for the [best default language](#default-language) and render the texts.
+
+Redux actions are connected to the footer with an onChange call to update language in the global state.
+
+## API
+
+API is an AWS Amplify api-sync instance. Which is connected to .env.example´s API_URL and other configuration keys.
+
+API gives you an array of objects with this structure:
+
+    [
+    {
+    tag: 'textTag',
+    valueLang: {
+        es: 'valueInSpanish',
+        en: 'valueInEnglish'
+        }
+    },
+    ]
+
+This array will serve the list of tags you define in AWS Amplify API.
+
+This data is pulled out by this Query:
+
+    {
+        listTranslations {
+          tag
+          valueLang {
+                        en
+                        es
+          }
+        }
+    }
+
+You can dynamically change it to retrieve less or more info. Graphql magic.
+
+## Default language
+
+In order to select default language it follows next hierarchy:
+
+1. Check if user has a selection stored in localStorage
+2. Check default´s browser language
+3. English
+
+## Styles
+
+Styles are supported by styled-component package and added in each component´s definition.
+
+## Packages used
+
+Besides default `create-next-app` ones.
+
+- `aws-amplify`
+- `memory-cache`
+- `next-redux-wrapper`
+- `react-redux`
+- `redux`
+- `redux-devtools-extension`
+- `redux-thunk`
+- `sass`
+- `styled-components`
+
+Dev:
+
+- `babel-plugin-styled-components`
+- `redux-logger`
+
+# Author
+
+- **Roberto Llopis** -> [LinkedIn](https://www.linkedin.com/in/robertollopis/)
